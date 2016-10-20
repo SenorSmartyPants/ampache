@@ -380,6 +380,20 @@ class Song extends database_object implements media, library_item
         $replaygain_track_peak = isset($results['replaygain_track_peak']) ? $results['replaygain_track_peak'] : null;
         $replaygain_album_gain = isset($results['replaygain_album_gain']) ? $results['replaygain_album_gain'] : null;
         $replaygain_album_peak = isset($results['replaygain_album_peak']) ? $results['replaygain_album_peak'] : null;
+        
+        $artist_id = null;
+        // Multiple artist per songs not supported for now
+        $artist_mbid = Catalog::trim_slashed_list($artist_mbid);
+        if (!isset($results['artist_id'])) {
+            //if artists tag is provided, use first artist in the list
+            //one of the steps on the way to multiple artist support
+            if (isset($results['artists']) && $results['artists'] != '') {
+                $artist = Catalog::trim_slashed_list($results['artists']);
+            }
+            $artist_id = Artist::check($artist, $artist_mbid);
+        } else {
+            $artist_id = intval($results['artist_id']);
+        }
 
         $albumartist_id = null;
         if (!isset($results['albumartist_id'])) {
