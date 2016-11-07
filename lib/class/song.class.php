@@ -398,11 +398,6 @@ class Song extends database_object implements media, library_item
         $albumartist_id = null;
         if (!isset($results['albumartist_id'])) {
             if ($albumartist) {
-                //if artists tag is provided, use first artist in the list
-                //one of the steps on the way to multiple artist support
-                if (isset($results['artists']) && $results['artists'] != '') {
-                    $albumartist = Catalog::trim_slashed_list($results['artists']);
-                }
                 // Multiple artist per songs not supported for now
                 $albumartist_mbid = Catalog::trim_slashed_list($albumartist_mbid);
                 $albumartist_id   = Artist::check($albumartist, $albumartist_mbid);
